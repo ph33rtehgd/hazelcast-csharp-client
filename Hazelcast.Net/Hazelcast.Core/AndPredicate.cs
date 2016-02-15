@@ -14,23 +14,24 @@
 
 using Hazelcast.IO;
 using Hazelcast.IO.Serialization;
+using System;
 
 namespace Hazelcast.Core
 {
     /// <summary>
-    /// SQL Predicate
+    /// And Predicate
     /// </summary>
-    public class SqlPredicate<TKey, TValue> : IPredicate<TKey, TValue>
+    public class AndPredicate<TKey, TValue> : IPredicate<TKey, TValue>
     {
-        private string _sql;
+        private IPredicate<TKey, TValue>[] _predicates;
 
-        public SqlPredicate()
+        public AndPredicate()
         {
         }
 
-        public SqlPredicate(string sql)
+        public AndPredicate(IPredicate<TKey, TValue>[] predicates)
         {
-            _sql = sql;
+            _predicates = predicates;
         }
 
         /// <summary>
@@ -39,7 +40,11 @@ namespace Hazelcast.Core
         /// <param name="output"></param>
         public void WriteData(IObjectDataOutput output)
         {
-            output.WriteUTF(_sql);
+            output.WriteInt(_predicates.Length);
+            foreach (IPredicate<TKey, TValue> predicate in _predicates)
+            {
+                output.WriteObject(predicate);
+            }
         }
 
         /// <summary>
@@ -48,7 +53,12 @@ namespace Hazelcast.Core
         /// <param name="input"></param>
         public void ReadData(IObjectDataInput input)
         {
-            _sql = input.ReadUTF();
+            int size = input.ReadInt();
+            _predicates = new IPredicate<TKey, TValue>[size];
+            for (int i = 0; i < size; ++i)
+            {
+                _predicates[i] = input.ReadObject<IPredicate<TKey, TValue>>();
+            }    
         }
 
         public int GetFactoryId()
@@ -58,7 +68,7 @@ namespace Hazelcast.Core
 
         public int GetId()
         {
-            return PredicateDataSerializerHook.SqlPredicate;
+            return PredicateDataSerializerHook.AndPredicate;
         }
     }
 }

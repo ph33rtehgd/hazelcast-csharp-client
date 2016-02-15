@@ -644,10 +644,10 @@ namespace Hazelcast.Client.Proxy
         public ISet<TKey> KeySet(IPredicate<TKey, TValue> predicate)
         {
             //TODO not supported yet
-            //if (predicate is PagingPredicate)
-            //{
-            //    return KeySetWithPagingPredicate((PagingPredicate)predicate);
-            //}
+            if (predicate is PagingPredicate<TKey, TValue>)
+            {
+                //return KeySetWithPagingPredicate((PagingPredicate)predicate);
+            }
             var request = MapKeySetWithPredicateCodec.EncodeRequest(GetName(), ToData(predicate));
             var keys = Invoke(request, m => MapKeySetWithPredicateCodec.DecodeResponse(m).list);
             return ToSet<TKey>(keys);
@@ -655,6 +655,10 @@ namespace Hazelcast.Client.Proxy
 
         public ISet<KeyValuePair<TKey, TValue>> EntrySet(IPredicate<TKey, TValue> predicate)
         {
+            if (predicate is PagingPredicate<TKey, TValue>)
+            {
+                return EntrySetWithPagingPredicate((PagingPredicate<TKey, TValue>)predicate);
+            }
             var request = MapEntriesWithPredicateCodec.EncodeRequest(GetName(), ToData(predicate));
             var entries = Invoke(request, m => MapEntriesWithPredicateCodec.DecodeResponse(m).entrySet);
             ISet<KeyValuePair<TKey, TValue>> entrySet = new HashSet<KeyValuePair<TKey, TValue>>();
@@ -665,6 +669,23 @@ namespace Hazelcast.Client.Proxy
                 entrySet.Add(new KeyValuePair<TKey, TValue>(key, value));
             }
             return entrySet;
+        }
+
+        public ISet<KeyValuePair<TKey, TValue>> EntrySetWithPagingPredicate(PagingPredicate<TKey, TValue> pagingPredicate)
+        {
+            pagingPredicate.SetIterationType(IterationType.ENTRY);
+
+            var request = MapEntriesWithPagingPredicateCodec.EncodeRequest(GetName(), ToData(pagingPredicate));
+            var entries = Invoke(request, m => MapEntriesWithPagingPredicateCodec.DecodeResponse(m).entrySet);
+            ISet<KeyValuePair<TKey, TValue>> entrySet = new HashSet<KeyValuePair<TKey, TValue>>();
+            foreach (var dataEntry in entries)
+            {
+                var key = ToObject<TKey>(dataEntry.Key);
+                var value = ToObject<TValue>(dataEntry.Value);
+                entrySet.Add(new KeyValuePair<TKey, TValue>(key, value));
+            }
+
+            return SortingUtil.GetSortedQueryResultSet(entrySet, pagingPredicate, IterationType.ENTRY);
         }
 
         public ICollection<TValue> Values(IPredicate<TKey, TValue> predicate)

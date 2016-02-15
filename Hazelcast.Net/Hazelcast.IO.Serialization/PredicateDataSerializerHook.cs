@@ -42,7 +42,9 @@ namespace Hazelcast.IO.Serialization
         {
             return new ArrayDataSerializableFactory(new Func<IIdentifiedDataSerializable>[]
             {
-                () => new SqlPredicate(),    
+                () => new SqlPredicate<object, object>(),
+                () => new AndPredicate<object, object>(),
+                () => new PagingPredicate<object, object>()
             });
         }
 

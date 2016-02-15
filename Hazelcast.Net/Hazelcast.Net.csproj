@@ -58,6 +58,7 @@
     <Compile Include="Hazelcast.Client.Connection\IConnectionListener.cs" />
     <Compile Include="Hazelcast.Client.Connection\IConnectionHeartbeatListener.cs" />
     <Compile Include="Hazelcast.Client.Protocol.Codec\MapAddInterceptorCodec.cs" />
+    <Compile Include="Hazelcast.Client.Protocol.Codec\MapEntriesWithPagingPredicateCodec.cs" />
     <Compile Include="Hazelcast.Client.Protocol.Codec\MapEvictAllCodec.cs" />
     <Compile Include="Hazelcast.Client.Protocol.Codec\MapRemoveInterceptorCodec.cs" />
     <Compile Include="Hazelcast.Client.Protocol.Codec\RingbufferAddAllCodec.cs" />
@@ -317,6 +318,8 @@
     <Compile Include="Hazelcast.Config\MatchingPointConfigPatternMatcher.cs" />
     <Compile Include="Hazelcast.Config\NearCacheConfigReadOnly.cs" />
     <Compile Include="Hazelcast.Config\SocketOptions.cs" />
+    <Compile Include="Hazelcast.Core\IterationType.cs" />
+    <Compile Include="Hazelcast.Core\PagingPredicate.cs" />
     <Compile Include="Hazelcast.Core\EntryAdapter.cs" />
     <Compile Include="Hazelcast.Core\IAtomicLong.cs" />
     <Compile Include="Hazelcast.Core\IIdGenerator.cs" />
@@ -377,6 +380,7 @@
     <Compile Include="Hazelcast.Core\MemberAttributeEvent.cs" />
     <Compile Include="Hazelcast.Core\MembershipListener.cs" />
     <Compile Include="Hazelcast.Core\OverflowPolicy.cs" />
+    <Compile Include="Hazelcast.Core\AndPredicate.cs" />
     <Compile Include="Hazelcast.Core\SqlPredicate.cs" />
     <Compile Include="Hazelcast.IO.Serialization\ArrayDataSerializableFactory.cs" />
     <Compile Include="Hazelcast.IO.Serialization\HeapData.cs" />
@@ -396,6 +400,7 @@
     <Compile Include="Hazelcast.Logging\LogLevel.cs" />
     <Compile Include="Hazelcast.Logging\ConsoleLogFactory.cs" />
     <Compile Include="Hazelcast.Logging\TraceLogFactory.cs" />
+    <Compile Include="Hazelcast.Map\SortedQueryResultSet.cs" />
     <Compile Include="Hazelcast.Net.Ext\ByteBuffer.cs" />
     <Compile Include="Hazelcast.Net.Ext\ByteOrder.cs" />
     <Compile Include="Hazelcast.Net.Ext\InputOutputStreams.cs" />
@@ -552,6 +557,7 @@
     <Compile Include="Hazelcast.Util\Clock.cs" />
     <Compile Include="Hazelcast.Util\EnvironmentUtil.cs" />
     <Compile Include="Hazelcast.Util\ExceptionUtil.cs" />
+    <Compile Include="Hazelcast.Util\SortingUtil.cs" />
     <Compile Include="Hazelcast.Util\HashUtil.cs" />
     <Compile Include="Hazelcast.Util\QuickMath.cs" />
     <Compile Include="Hazelcast.Util\RandomLB.cs" />

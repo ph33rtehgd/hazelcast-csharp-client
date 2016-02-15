@@ -70,7 +70,7 @@ namespace Hazelcast.Client.Test
             context.BeginTransaction();
             var txnMap = context.GetMap<object, object>(_name);
 
-            var sqlPredicate = new SqlPredicate("this == value1");
+            var sqlPredicate = new SqlPredicate<object, object>("this == value1");
             var keys = txnMap.KeySet(sqlPredicate);
 
             Assert.AreEqual(1, keys.Count);

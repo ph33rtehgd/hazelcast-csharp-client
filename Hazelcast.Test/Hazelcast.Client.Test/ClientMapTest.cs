@@ -253,7 +253,7 @@ namespace Hazelcast.Client.Test
             map.Put("key2", "value2");
             map.Put("key3", "value3");
 
-            var keyValuePairs = map.EntrySet(new SqlPredicate("this == value1"));
+            var keyValuePairs = map.EntrySet(new SqlPredicate<object, object>("this == value1"));
             Assert.AreEqual(1, keyValuePairs.Count);
 
             var enumerator = keyValuePairs.GetEnumerator();
@@ -434,7 +434,7 @@ namespace Hazelcast.Client.Test
         {
             FillMap();
 
-            var values = map.KeySet(new SqlPredicate("this == value1"));
+            var values = map.KeySet(new SqlPredicate<object, object>("this == value1"));
             Assert.AreEqual(1, values.Count);
             var enumerator = values.GetEnumerator();
             Assert.IsTrue(enumerator.MoveNext());
@@ -603,8 +603,8 @@ namespace Hazelcast.Client.Test
                 delegate { },
                 delegate { });
 
-            map.AddEntryListener(listener1, new SqlPredicate("this == value1"), false);
-            map.AddEntryListener(listener2, new SqlPredicate("this == value3"), "key3", true);
+            map.AddEntryListener(listener1, new SqlPredicate<object, object>("this == value1"), false);
+            map.AddEntryListener(listener2, new SqlPredicate<object, object>("this == value3"), "key3", true);
 
             map.Put("key1", "value1");
             map.Put("key2", "value2");
@@ -943,7 +943,7 @@ namespace Hazelcast.Client.Test
         {
             FillMap();
 
-            var values = map.Values(new SqlPredicate("this == value1"));
+            var values = map.Values(new SqlPredicate<object, object>("this == value1"));
             Assert.AreEqual(1, values.Count);
             var enumerator = values.GetEnumerator();
             Assert.IsTrue(enumerator.MoveNext());

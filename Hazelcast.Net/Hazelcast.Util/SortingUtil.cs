@@ -47,11 +47,11 @@ namespace Hazelcast.Util
             int end = begin + pageSize;
             if (end > size)
             {
-                end = size;
+                pageSize = size - begin;
             }
 
             SetAnchor(sortedList, pagingPredicate, nearestPage);
-            List<KeyValuePair<TKey, TValue>> subList = sortedList.GetRange(begin, end);
+            List<KeyValuePair<TKey, TValue>> subList = sortedList.GetRange(begin, pageSize);
             return new SortedQueryResultSet<TKey, TValue>(comparer, subList, iterationType);
         }
 
